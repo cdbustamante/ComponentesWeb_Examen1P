@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Ejercicio 2</title>
+	
+    
+</head>
+<body>
+    
+  <emisor-component></emisor-component>
+  <receptor-component></receptor-component>  
+
+    <script >
+	class BotonComponente extends HTMLElement {
+    connectedCallback() {
+      this.innerHTML = `<button>Enviar Mensaje</button>`;
+      this.querySelector('button').addEventListener('click', () => {
+        const msj ='mensaje para receptor';
+        const customEvent = new CustomEvent('mensajeEnviado', { detail: {msj} ,bubbles: true });
+        this.dispatchEvent(customEvent);
+      });
+    }
+  }
+  customElements.define('emisor-component', BotonComponente);
+  
+  class MensajeComponente extends HTMLElement {
+    connectedCallback() {
+      this.innerHTML = `<h1 id="mensajeReceptor"></h1>
+      `;
+      window.addEventListener('mensajeEnviado', (event) => {
+        const m1 = this.querySelector('#mensajeReceptor');
+        
+       
+          m1.textContent = event.detail.msj;
+        
+      });
+    }
+  }
+  customElements.define('receptor-component', MensajeComponente);
+	
+	</script>
+    
+</body>
+</html>
